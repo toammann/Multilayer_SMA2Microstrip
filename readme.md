@@ -214,6 +214,7 @@ The transition is very low cost and intended for hobbyist an prototyping use. A 
 | 6 Layer PCB by AISLER (one piece)  | 20€/3 = 6.67€ |
 | Rosenberger connector (two pieces) | 2*6€ = 12€    |
 | Total Cost                         | 18.67€        |
+
  </p>
 
  The agreement between simulated and measured results is very good especially considering the high manufacturing tolerances due to hand soldering and a low cost PCB. OpenEMS does a remarkable job here! In my opinion this simulator get way to less attention for its capabilities. 
