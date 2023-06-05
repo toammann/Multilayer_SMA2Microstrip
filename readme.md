@@ -207,7 +207,7 @@ The Rosenberger 32K242-40ML5 connector was chosen for this task. A 6 layer test 
 
 The transition is very low cost and intended for hobbyist an prototyping use. A 20GHz SMA transition for under 20€ as a "one off prototype order" is to my knowledge unique. 
 
-<p align = "center">
+<div align="center">
 
 | Item                               | Cost          |
 |------------------------------------|---------------|
@@ -215,7 +215,7 @@ The transition is very low cost and intended for hobbyist an prototyping use. A 
 | Rosenberger connector (two pieces) | 2*6€ = 12€    |
 | Total Cost                         | 18.67€        |
 
- </p>
+ </div>
 
  The agreement between simulated and measured results is very good especially considering the high manufacturing tolerances due to hand soldering and a low cost PCB. OpenEMS does a remarkable job here! In my opinion this simulator get way to less attention for its capabilities. 
 
