@@ -210,7 +210,7 @@ The transition is very low cost and intended for hobbyist an prototyping use. A 
 <div align="center">
 
 | Item                               | Cost          |
-|------------------------------------|---------------|
+|:-----------------------------------|:--------------|
 | 6 Layer PCB by AISLER (one piece)  | 20€/3 = 6.67€ |
 | Rosenberger connector (two pieces) | 2*6€ = 12€    |
 | Total Cost                         | 18.67€        |
