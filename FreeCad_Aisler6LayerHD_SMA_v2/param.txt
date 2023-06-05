@@ -1,0 +1,95 @@
+pcb_x	20	Length of the pcb in the x-dimension
+pcb_y	15	Length of the pcb in the y-dimension
+pcb_th	1.4035	Total thickness of the pcb
+
+port_length_x	6.5	Reserved length on the substrate for the openEMS port =B1 - (B7 + B12 + B61 + B64 + B66) - 5
+
+slot_x	7	Length of the slot for the connector  in the x-dimension
+slot_y	7.2	Length of the slot for the connector  in the y-dimension
+
+edge_milling_tool_diam	1.6	Dimameter of the milling tool
+edge_drill_diam	0.9	Diameter of the edge drill (tooling diamater)
+edge_spacing_copper_x	0.2	Coppler clearance measured from the pcb edge in x-dimension
+edge_spacing_via_x	0.3	Distance bewteen the board edge and a via coverpad
+metal_remove_y	2.9	Copper removal at the slot in the y dimension	3.1
+edge_plating_th	0.02	Thickness of the edge plating
+
+conn_length_case	6.9	Length of the connector case
+conn_length_thread	4	Length of the round connector part (with threead)
+conn_sub_l_red	0.15	Substrate indentation
+conn_inner_cond_pos_z	0.5	Z-Position of the inner conductor center point
+conn_thread_d	5
+
+conn_inner_cond_diam1	1.2	Diameter of the inner conductor (wide section)
+conn_inner_cond_diam2	0.79	Diameter of the inner conductor (narrow section)
+conn_inner_ext	2
+conn_inner_sec1_x	3.6	Section 1 of the inner conducor - x-dimension
+conn_inner_sec2_x	0.4
+conn_inner_sec3_x	0.25
+conn_inner_sec4_x	0.15
+conn_inner_sec5_x	2.1
+conn_inner_sec6_x	6.4
+conn_inner_sec1_y	0.6	Section 1 of the inner conducor - y-dimension (only the half of the section is drawn due to rotation of the sketch to form the round geometry)
+conn_inner_sec2_y	0.425
+conn_inner_sec3_y	0.75
+conn_inner_sec4_y	0	überbestimmt
+conn_inner_sec5_y	0.6
+conn_inner_sec6_y	0.395
+
+conn_outer_cond_diam1	4	Diameter of the outer conductor 1 (wide section)
+conn_outer_cond_diam2	2.5	Diameter of the outer conductor 1 (narrow section)
+conn_outer_sec1_x	5.15
+conn_outer_sec2_x	0.8
+conn_outer_sec3_x	0.8
+conn_outer_sec4_x	4
+conn_outer_sec1_y	2
+conn_outer_sec2_y	1.8
+conn_outer_sec3_y	2
+conn_outer_sec4_y	1.25
+
+via_cp_d	0.6	Via coverpad diameter
+via_d	0.3	Via diameter
+via_pitch	0.6	Via pitch
+via_trans_region_pos_x	7.6	Length of via transisition region (area with decreased gnd spacing)
+
+solder_h	0.5	Height of solder joints
+solder_excess_x	0.5	Excess of solder joints (extend in the x-dimension)
+solder_length_y	1.5	Length of the solder joint in the y direction
+
+l01_wg_trace_w	0.65	Width of the waveguide trace (microstrip)
+l01_wg_trace_gndfree	3.1	Ground cutout around the microstrip on the top layer (total dimension including l01_wg_trace_w)
+l01_pad_x	2	Connector solder pin pad x-dimension
+l01_pad_y	1.1	Connector solder pin pad y-dimension
+l01_pad2gnd_spacing_y	0.45	GND spacing in the via transition region	0.35
+l01_compL_x	0.4	Length of the inductive compensation structure in the x-dimension	0.6
+l01_compL_y	0.25	Length of the inductive compensation structure in the y-dimension	0.25
+l01_compC_x	0.25	Length of the capacitive compensation structure in the x-dimension	0.4
+l01_compC_y	1.2	Length of the capacitive compensation structure in the y-dimension	1.25
+l01_gnd_trans_taper_len_x	0.5	Length of the taper (step in ground plane from the transition region to the microstrip region)
+
+l03_gnd_ref_cutout_x	2	Cutout under the pad, x-dimension
+l03_gnd_ref_cutout_y	2	Cutout under the pad, y-dimension
+
+l01_th	0.04	Thickness of layer 01, copper
+sub01_th	0.136	Thickness of substrate 01, prepreg
+l02_th	0.035	Thickness of layer 02, copper
+sub02_th	0.2	Thickness of substrate 02, core
+l03_th	0.035	Thickness of layer 03, copper
+sub03_th	0.5115	Thickness of substrate 03, prepreg
+l04_th	0.035	Thickness of layer 04, copper
+sub04_th	0.2	Thickness of substrate 04, core
+l05_th	0.035	Thickness of layer 05, copper
+sub05_th	0.136	Thickness of substrate 05, prepreg
+l06_th	0.04	Thickness of layer 06, copper
+
+l01_pos	-0.04	Referenced to top (most negatvie z value of the shape)
+sub01_pos	-0.176
+l02_pos	-0.211
+sub02_pos	-0.411
+l03_pos	-0.446
+sub03_pos	-0.9575
+l04_pos	-0.9925
+sub04_pos	-1.1925
+l05_pos	-1.2275
+sub05_pos	-1.3635
+l06_pos	-1.4035
