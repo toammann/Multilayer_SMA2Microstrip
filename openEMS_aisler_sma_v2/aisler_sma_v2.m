@@ -59,7 +59,7 @@ mydir  = pwd;
 idcs   = strfind(mydir, filesep);
 parentDir = mydir(1:idcs(end)-1);
 
-model_dir = [parentDir, filesep, 'FreeCad_Aisler6LayerHD_SMA_v2'];
+model_dir = [parentDir, filesep, 'FreeCAD_Aisler6LayerHD_SMA_v2'];
 model_dir = strrep(model_dir, '\', '\\');
 filesep_dbl = '\\';
 
