@@ -1,0 +1,6 @@
+.vscode/
+plotSmith.m
+openEMS_aisler_sma_v2/sim_res_p1/
+openEMS_aisler_sma_v2/sim_res_p2/
+*.bak
+*.FCStd1
