@@ -64,7 +64,7 @@ $$
     Z_0 = \frac{1}{2\pi}\sqrt{\frac{\mu_0\mu_r}{\epsilon_0\epsilon_r}}\ln\left(\frac{D}{d}\right)
 $$
 
-The relative permittivity of the connector substrate was found to be about $\epsilon_r$=2.08 for diameter values of D=4mm (outer), d=1.2mm (inner) and further $\mu_r$=1,  $Z_0$=50Ohm. This is a typical value for a teflon material.
+The relative permittivity of the connector substrate is found to be around $\epsilon_r$=2.08 for measured diameter values of D=4mm (outer), d=1.2mm (inner) and $\mu_r$=1,  $Z_0$=50Ohm. This is a typical value for a teflon material.
 
 ## 4. PCB Design Considerations and Manufacturing
 For a project of this kind choosing the right PCB (Printed Circuit Board) stackup and technology is actually more important than the choice of the SMA connector.
