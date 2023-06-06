@@ -35,30 +35,30 @@ A list of open source software used in this project:
 
 
 ## 2. Rosenberger 32K242-40ML5 SMA Connector
-I have chosen a typical right angle jack SMA connector. This connector type requires a cutout in the PCB edge which is - of course - an additional design and manufacturing effort.
+I have chosen a typical right angle jack SMA connector. This connector type requires a cutout in the PCB edge which is an additional design and manufacturing effort.
 
 <p align = "center"><img src="./figures/edge_mount_connector.jpg" alt="fig_conn_wuerth" width="500"></p>
 <p align = "center">Figure 1: A typical edge mount SMA connector to be mounted in a cutout</p>
 
-However, I like these connectors because the solder mount is very strong due to the large mounting area which results in very good mechanical durability. The parasitic inductance in the return current is also low because the solder joint is right at the edge of the coaxial outer conductor.
+However, I like these connectors because the solder mount is very strong due to the large mounting area which results in very good mechanical durability. The parasitic inductance in the return current is also low because the solder joint is right at the circular edge of the coaxial outer conductor.
 
- Connectors of this kind are available from multiple manufacturers (Molex, Würth, Rosenberger...). I simply chose the one which was cheapest for me to source which was the one manufactured by Rosenberger. Therefore the 32K242-40ML5 made the run, purchased for about 6€ at rs-online.com. Figure 1 shows an exemplary CAD model from Würth (Rosenberger does not provide CAD a model for their part).
+ Connectors of this kind are available from multiple manufacturers (Molex, Würth, Rosenberger...). I chose the one which was cheapest for me to source which was the one manufactured by Rosenberger. Therefore the 32K242-40ML5 made the run, purchased for about 6€ at rs-online.com. Figure 1 shows an exemplary CAD model of the Würth 60312202114307 (Rosenberger does not provide CAD a model for their part).
 
 ## 3. The Connector Model
 Typically the first step in designing a coaxial to microstrip transition is to request a simulation or mechanical model from the connector vendor. 
 
 Today, most vendors provide detailed models for commercial simulators. However, in most cases a NDA (Non Disclosure Agreement) is required . Sometimes the internals of the connector are even encrypted and therefore not visible to the user (e.g. SV Microwave).
 
-I had no hope that Rosenberger would send a model to me, a private person without a NDA. I tried it nevertheless - with no success. They did not even bother to respond to my email.
+I had no hope that Rosenberger would send a model to me - a private person without a NDA. I tried it nevertheless - with no success. They did not even bother to respond to my email.
 
-So, in order to proceed I tried to do the best I could with the tools I had at home. I simply cut the connector in half with a rotary tool. The goal was to create a "poor man´s microsection view". I was quite surprised how well this tuned out. The result is good enough to take some measurements.
+So, in order to proceed the connector was cut in half with a rotary tool. The goal was to create a "poor man´s microsection view". I was quite surprised how well this tuned out. The result is good enough to take some measurements.
 
-Ready to draw the thing in FreeCAD!
+Ready to create a 3D model in FreeCAD!
 
 <p align = "center"><img src="./figures/connector_microsection.jpg" alt="fig_microsection" width="700"></p>
 <p align = "center">Figure 2: Microsection view of the Rosenberger 32K242-40ML5</p>
 
-To estimate the permittivity we can use the measured dimensions and the standard equation for the impedance of a coaxial waveguide. We know that the impedance inside of the connector must match $Z_0$=50Ohm at inner conductor clamping area on the right side of Figure 2. 
+To estimate the substrate permittivity we can use the measured dimensions and the standard equation for the impedance of a coaxial waveguide. We know that the impedance inside of the connector must match $Z_0$=50Ohm at inner conductor clamping area on the right side of Figure 2. 
 
 $$
     Z_0 = \frac{1}{2\pi}\sqrt{\frac{\mu_0\mu_r}{\epsilon_0\epsilon_r}}\ln\left(\frac{D}{d}\right)
@@ -69,13 +69,13 @@ The relative permittivity of the connector substrate is found to be around $\eps
 ## 4. PCB Design Considerations and Manufacturing
 For a project of this kind choosing the right PCB (Printed Circuit Board) stackup and technology is actually more important than the choice of the SMA connector.
 
-To prevent radiation effects at the interconnect, to minimize GND return current inductance and also for mechanical durability reasons it is usually beneficial to have an edge metallization in the area around the connector. However, this technology typically involves an additional PCB fabrication step which increases the cost significantly (which is especially true for common PCB prototyping platforms). This project is a hobbyist one so I wanted it to be as cheap as possible.
+To prevent radiation effects at the interconnect, to minimize GND return current inductance and also for mechanical durability reasons it is usually beneficial to have an edge metallization in the area around the connector. However, this technology typically involves an additional PCB fabrication step which increases the cost significantly (which is especially true for common PCB prototyping platforms). Because this is a hobby project I wanted it to be as cheap as possible.
 
 In the past I have worked with a german PCB prototyping service [AISLER](https://aisler.net/?lang=en). I was quite satisfied with the quality of the delivered boards. Starting from 12/2022 AISLER has released a new FR4 6 Layer PCB stackup that should work well for RF projects for various reasons. One very nice features of AISLER is that "Castellated Holes" are free.
 
-I had the idea to abuse this castellated hole feature to create a short piece of edge metallization. Placing the castellated holes and slots and also to plan the board outline carefully was tricky. I was in contact with the team of AISLER. The support was very supportive, excellent!
+I had the idea to abuse this castellated hole feature to create a short piece of edge metallization. Placing the castellated holes and slots and also to plan the board outline carefully was tricky. I even had to contact the support team of AISLER. The provided support was excellent!
 
-The result is - in my opinion - amazing! The edge metallization looks very good and it comes for free :)
+The fabricated result is amazing! The edge metallization looks very good and it comes for free :)
 
 <p align = "center"><img src="./figures/edge_metal.jpg" alt="fig_edge_metal" width="700"></p>
 <p align = "center">Figure 3: Edge-Metallization of the testboard fabricated by AISLER using castellated slots</p>
@@ -103,19 +103,19 @@ Figure 5 shows the connector and PCB model in FreeCAD with a cut plane at y=0. T
 
 Once the model parameters are settled in FreeCAD the user executes the Python FreeCAD export script which generates a set of *.stl files. These files are then imported in the octave openEMS script. Figure 6 shows the model and mesh result in AppCSXCAD the 3D Model editor/viewer of openEMS. 
 
-Proper meshing techniques were applied in order to get a reasonably fast simulation and high accuracy results. One can clearly see how the mesh is denser in the area where the geometry details have a great impact and less dense in less important areas.
+Proper meshing techniques were applied in order to get a reasonably fast simulation and high accuracy results. One can clearly see how the mesh is denser in the area where the geometry details have a greater impact and less dense in less important areas.
 
 <p align = "center"><img src="./figures/connector_openEMS.png" alt="fig_connector_openems"></p>
 <p align = "center">Figure 6: The Connector and PCB Model in AppCSXCAD (openEMS)</p>
 
-The final output of the project - which is hopefully of use for the community - is a multilayer KiCAD footprint for the connector. Officially the KiCAD footprint editor does not support shapes on the internal metal layers. However, the footprint file can be modified with a text editor. Here shapes can also be placed on the internal layers which works just fine. 
+The final output of the project - which is hopefully of use for the community - is a multilayer KiCAD footprint for the connector. Officially the KiCAD footprint editor does not support shapes on the internal metal layers. However, the footprint file can be modified with a text editor. Here shapes can be placed on the internal layers which works just fine. 
 
 In order to use the KiCAD connector Footprint simply assign it to a symbol in the schematic and place "Copper Zones" (see example board) on the internal layers of your application board. Make sure to follow the  [bridges and frames](https://community.aisler.net/t/bridges-and-frames/49) design rules from AISLER. Everything else is handled in the KiCAD footprint.
 
 <p align = "center"><img src="./figures/connector_kicad.png" alt="fig_connector_kicad" width="700"></p>
 <p align = "center">Figure 7: Multi layer Connector Footprint in KiCAD</p>
 
-Finally to test and measure the connector transition 3 6 layer back-to-back test board was created in KiCAD. A total of three boards were manufactured by AISLER for around 20€. 
+Finally to test and measure the connector transition a 6 layer back-to-back test board was created in KiCAD. A total of three boards were manufactured by AISLER for around 20€. 
 
 <p align = "center"><img src="./figures/testboard_kicad3d.png" alt="fig_tesetboard_kicad" width="700"></p>
 <p align = "center">Figure 8: Test Fixture of the Rosenberger 32K242-40ML5 SMA Connector on  the AISLER 6LayerHD Stackup in KiCAD</p>
@@ -143,7 +143,7 @@ Port 1 is the coaxial one, Port 2 the microstrip port. A return loss greater tha
 <p align = "center"><img src="./figures/plot_res_sim.png" alt="fig_plot_res_sim"  width="800"></p>
 <p align = "center">Figure 11: OpenEMS simulation result after optimization. Port 1 (coaxial), Port 2 (microstrip), Return Loss > 23dB</p>
 
-The smit chart plot in Figure 12 shows the in- and output trajectories on the complex reflection coefficient plane. They are nicely point symmetric to the origin. Overall these  results look promising. There is some margin for manufacturing tolerances left over.
+The smit chart plot in Figure 12 shows the in- and output trajectories on the complex reflection coefficient plane. They are nicely point symmetric to the origin. Overall these  results look promising. There is some margin for manufacturing tolerances left.
 
 The openEMS simulation takes about 20 minutes to complete.
 
@@ -159,9 +159,7 @@ The fabricated test board from Figure 8 with two connectors back to back was mea
 
 Let´s take a closer look at this plot. The S21 curve is almost perfect. It is flat with no dips. However, one will notice that the magnitude return loss curves are not identical. So, the structure is not entirely symmetrical. This is due to manufacturing tolerances. Keep in mind that we are talking about a low cost connector and PCB. The connectors are hand soldered, so some small displacements are to expected.
 
-The return loss is well below 20dB up to about 12GHz. Around 15GHz the return loss decreases to about 15.7dB. Finally it rises again above 20dB at 20GHz.
-
-In order to relate this result of Figure 13 to the simulated one in Figure 11 some some approximate observations can be done. Approximately, we can think about the measured structure as two identical imperfectly matched two ports (the connector) with very low insertion loss and an ideal transmission line in between. Because the insertion loss of the two ports is low every miss match on either side will propagate directly through to the other side. The transmission line will further rotate the phase of the reflection coefficients with frequency. The 28.9mm transmission line is multiple wavelengths long at the highest frequency of interest (20GHz). So it is save to assume that the all possible phase angles between the two imperfectly matched connectors will occur over frequency.
+In order to relate this result of Figure 13 to the simulated one in Figure 11 some some approximate observations can be done. Approximately, we can think about the measured structure as two identical imperfectly matched two ports (the connector) with low insertion loss and an ideal transmission line in between. Because the insertion loss of the two ports is low every miss match on either side will propagate directly through to the other side. The transmission line will further rotate the phase of the reflection coefficients with frequency. The 28.9mm transmission line is multiple wavelengths long at the highest frequency of interest (20GHz). So it is save to assume that the all possible phase angles between the two imperfectly matched connectors will occur over frequency.
 
 This phase related worst case impedance miss match $\Gamma_{max}$ that may occur when two imperfectly matched ports with $|\Gamma_a|$ and $|\Gamma_b|$ are connected can be estimated from the following equation. It can be easily derived from the definition if the reflection coefficient:
 
@@ -182,30 +180,30 @@ To properly compare the simulation with the measurement results some advanced ma
 1. Perform a S-Parameter simulation using the touchstone files of the EM-simulation to model the back to back structure from Figure 8. In the simulator place the touchstone files back to back with a transmission line of the correct length in between. 
 2. Cut the structure mathematically in half to separate the left from the right connector. De-embed the remaining transmission line in a second step.
 
-Method 1. has the benefit of being easy to generate using any standard S-Parameter simulator such as Qucs. One downside of this method is that the characteristics a the single connector (left or right ) are not extracted. However, the single connector characteristics are the one of interest when using the connector in an actual circuit. 
+Method 1. has the benefit of being easy to generate using any standard S-Parameter simulator such as Qucs. The downside of this method is that the characteristics a the single connector (left or right ) are not extracted. However, the single connector characteristics are the one of interest when using the connector in an actual circuit. 
 
- The approach in Method 2 extracts the single connector characteristic. This data can be compared directly to the simulation result which is desireable. However, the output data of this method is more difficult to generate.
-The [IEEE P370 Standard (Electrical Characterization of Printed Circuit Board and Related Interconnects at Frequencies up to 50 GHz) ](https://ieeexplore.ieee.org/document/8078138)comes with an open source mathematical algorithm to achieve this goal. The source code can be found on the [IEEE gitlab](https://opensource.ieee.org/elec-char/ieee-370). Internally it uses a time domain transformation approach.
+The approach in Method 2 extracts these single connector characteristics. This data can be compared directly to the simulation result which is desireable. However, the output data of this method is more difficult to generate.
+The IEEE P370 Standard [(Electrical Characterization of Printed Circuit Board and Related Interconnects at Frequencies up to 50 GHz) ](https://ieeexplore.ieee.org/document/8078138)comes with an open source mathematical algorithm to achieve this goal. The source code can be found on the [IEEE gitlab](https://opensource.ieee.org/elec-char/ieee-370). Internally it uses a time domain transformation approach.
 
-Finally Figure 14 shows the prost processed measurement results from Figure 13 by applying Method 2 on the data.
+Finally Figure 14 shows the prost processed measurement results from Figure 13 by applying Method 2 on the measured data.
 
 <p align = "center"><img src="./figures/plot_res_sim_vs_meas.png" alt="fig_plot_res_sim_vs_meas"  width="800"></p>
 <p align = "center">Figure 14: OpenMES Simulated S-Parameters vs. VNA-Measurement (Post-Processed/De-Embedded via Method 2) </p>
 
-We can see, that the worst case insertion loss is very close to our predicted value of -21.63dB calculated above. Overall the agreement is impressive considering the large manufacturing tolerances of a PCB fabricated by a prototyping service and a hand soldered connector.
+We can see, that the worst case insertion loss around 17.5GHz is very close to our estimated value of -21.63dB which was calculated above. Overall the agreement is impressive considering the large manufacturing tolerances of a PCB fabricated by a prototyping service and a hand soldered connector.
 
 The connector itself has a very large return loss tolerance specification. From the datasheet:
 > VSWR = 1.1 + 0.02 x 20GHz = 1.5 (RL = 14dB)
 
-This is much worse than the measured result on its own! Overall the agreement is remarkable.
+This is much worse than the measured result on its own! So, overall the agreement is remarkable.
 
 ## 8. Conclusion
 
-To test the open source openEMS EM-Solver a SMA coaxial to microstrip transition was designed and simulated. 
+To test the openEMS FDTD-Solver a SMA coaxial to microstrip transition was designed and simulated. 
 
-The Rosenberger 32K242-40ML5 connector was chosen for this task. A 6 layer test board with FR4 substrate was fabricated by AISLER, a german PCB prototyping service. Using castellated holes in a suitable configuration a PCB edge metallization was created. Finally a - ready to use - KiCAD footprint was created. The footprint enables the user to design complex RF circuits up to 20GHz on the AISER 6LayerHD FR4 stackup.  
+The Rosenberger 32K242-40ML5 connector was chosen for this task. A 6 layer test board with FR4 substrate was fabricated by AISLER, a german PCB prototyping service. Using castellated holes in a suitable configuration a PCB edge metallization was created. Finally a easy to use KiCAD footprint was created. The footprint enables the user to design complex RF circuits up to 20GHz on the AISER 6LayerHD FR4 stackup.  
 
-The transition is very low cost and intended for hobbyist an prototyping use. A 20GHz SMA transition for under 20€ as a "one off prototype order" is to my knowledge unique. 
+The transition is very low cost and intended for hobbyist and prototyping use. A 20GHz SMA transition for under 20€ as a "one off prototype order" is to my knowledge unique. 
 
 <div align="center">
 
@@ -219,4 +217,9 @@ The transition is very low cost and intended for hobbyist an prototyping use. A 
 
  The agreement between simulated and measured results is very good especially considering the high manufacturing tolerances due to hand soldering and a low cost PCB. OpenEMS does a remarkable job here! In my opinion this simulator get way to less attention for its capabilities. 
 
- This case study clearly shows that is possible in 2023 to design high performance RF hardware using open source software only.
+ This case study clearly shows that is possible to design high performance RF hardware using open source software only.
+
+ ### License Information
+
+- Layouts, 3D models, footprints: Creative Commons Legal Code CC0 1.0 Universal
+ - Program code: BSD 2-Clause License
