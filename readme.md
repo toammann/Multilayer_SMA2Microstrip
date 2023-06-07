@@ -201,7 +201,7 @@ This is much worse than the measured result on its own! So, overall the agreemen
 
 To test the openEMS FDTD-Solver a SMA coaxial to microstrip transition was designed and simulated. 
 
-The Rosenberger 32K242-40ML5 connector was chosen for this task. A 6 layer test board with FR4 substrate was fabricated by AISLER, a german PCB prototyping service. Using castellated holes in a suitable configuration a PCB edge metallization was created. Finally a easy to use KiCAD footprint was created. The footprint enables the user to design complex RF circuits up to 20GHz on the AISER 6LayerHD FR4 stackup.  
+The Rosenberger 32K242-40ML5 connector has been integrated on a 6 layer test board with FR4 substrate fabricated by AISLER a german PCB prototyping service. Using castellated holes in a suitable configuration a PCB edge metallization has been realized with no additional cost. Finally a easy to use KiCAD footprint was created. The footprint enables the user to design complex RF circuits up to 20GHz on the AISER 6LayerHD FR4 stackup.  
 
 The transition is very low cost and intended for hobbyist and prototyping use. A 20GHz SMA transition for under 20€ as a "one off prototype order" is to my knowledge unique. 
 
@@ -215,9 +215,9 @@ The transition is very low cost and intended for hobbyist and prototyping use. A
 
  </div>
 
- The agreement between simulated and measured results is very good especially considering the high manufacturing tolerances due to hand soldering and a low cost PCB. OpenEMS does a remarkable job here! In my opinion this simulator get way to less attention for its capabilities. 
+ The agreement between simulated and measured results is very good especially considering the high manufacturing tolerances due to hand soldering and a low cost PCB. OpenEMS does a remarkable job here! In my opinion this simulator gets way to less attention for its capabilities. 
 
- This case study clearly shows that is possible to design high performance RF hardware using open source software only.
+ This case study shows that it is possible to design high performance RF hardware using open source software only.
 
  ### License Information
 
