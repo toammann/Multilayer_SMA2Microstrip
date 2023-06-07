@@ -53,19 +53,19 @@ function posSkipped = skipFixedMeshLine(pos, minDist)
 % OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 % OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-  posSkipped = pos(1);
+  % delete exact dublicates
+  posUnique = unique(pos, 'stable'); 
+  posSkipped = [];
   
-  for i=1:(length(pos)-1)
-    
-   diffPos = pos(i+1) - posSkipped(end); % compare with the last known good line
-   
-   if abs(diffPos) < (minDist - 1e-12)
-     % Not a valid Mesh line 
-     fprintf('Info: Delete mesh line in %s at %.4f. Distance to adjacent mesh line is smaller than minDist: %.4f < %.4f(minDist)\n', inputname(1), pos(i+1), diffPos, minDist);
-   else
-     % Valid mesh line --> save index as good
-     posSkipped(end+1) = pos(i+1);
-   endif
-   
-  endfor
+  for i = length(posUnique):-1:1 %run backwards trough vector
+      
+      diff = min(abs(posUnique(i) - posUnique(2:i-1)));
+      
+      if (diff < (minDist - 1e-12))
+        % Not a valid Mesh line 
+        fprintf('Info: Skipp mesh line in %s at %.4f. Distance to adjacent mesh line is smaller than minDist: %.4f < %.4f(minDist)\n', inputname(1), posUnique(i), diff, minDist);
+      else
+        posSkipped = [posUnique(i), posSkipped];
+      end
+   end
 end

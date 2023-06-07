@@ -239,19 +239,16 @@ pos_x  = [  pos_x_ports,...
             pos_x_vias_trans(1:6),...
             pos_x_vias_fence,...
             ];
-            
-pos_x = unique(pos_x);
 
 % Skip / delete fixed mesh lines with a distance smaller than minFixedMeshDist
 % Keep the one with the lowest index (assume the highest priority)
 pos_x = skipFixedMeshLine(pos_x, minFixedMeshDist);
+pos_x = sort(pos_x);
 
 % Define a range to mesh with a finer resultion than the restoredefaultpath
 % Use the fine resolution in areas with dense mesh lines defined by pos_x
 [~, idx_mposfine_x_min] = min(abs(pos_x - pos_x_conn_outer(2)));
-[~, idx_mposfine_x_max] =  min(abs(pos_x - pos_x_vias_fence(3)));
-##idx_mposfine_x_min = find(pos_x == pos_x_conn_outer(2));
-##idx_mposfine_x_max = find(pos_x == pos_x_vias_fence(3));
+[~, idx_mposfine_x_max] = min(abs(pos_x - pos_x_vias_fence(3)));
 
 % Extract the meshlines in the fine area
 pos_x_fine = pos_x(idx_mposfine_x_min:idx_mposfine_x_max);
@@ -337,11 +334,10 @@ pos_y  = [ pos_y_pcb,...
            pos_y_vias_fence,...
             ];
 
-pos_y = unique(pos_y);
-
 % Skip / delete fixed mesh lines with a distance smaller than minFixedMeshDist
 % Keep the one with the lowest index (assume the highest priority)
 pos_y = skipFixedMeshLine(pos_y, minFixedMeshDist);
+pos_y = sort(pos_y);
 
 % Define a range to mesh with a finer resultion than the restoredefaultpath
 % Use the fine resolution in areas with dense mesh lines defined by pos_x
@@ -379,7 +375,6 @@ mesh.y = [-flip(mesh.y(2:end)), mesh.y]; %The structure is symmetrical at the xz
 
 % Decreasing pos_z_stackup(1) = 0 --> the mesher will not hit the solder joint!
 # Make sure it is meshed correctly in the PEC dump (PEC_dump.vtp)
-
 
 % Positions Referenced to top (most negatvie z value of the shape)
 pos_z_stackup(1)  = 0               - float_tol;    % Top surface
@@ -420,14 +415,16 @@ pos_z = [  min(pos_z_conn_outer)- lambda/4/unit,...
            pos_z_conn_outer,...
            max(pos_z_conn_outer) + lambda/2/unit,...
            ];
-pos_z = unique(pos_z);
+
+% Skip / delete fixed mesh lines with a distance smaller than minFixedMeshDist
+% Keep the one with the lowest index (assume the highest priority)
+pos_z = skipFixedMeshLine(pos_z, minFixedMeshDist);
+pos_z = sort(pos_z);
 
 % Define a range to mesh with a finer resultion than the restoredefaultpath
 % Use the fine resolution in areas with dense mesh lines defined by pos_x
 [~,idx_mposfine_z_min] =  min(abs(pos_z - min(pos_z_conn_outer)));
 [~,idx_mposfine_z_max] =  min(abs(pos_z - max(pos_z_conn_outer)));
-##idx_mposfine_z_min = find(pos_z == min(pos_z_conn_outer));
-##idx_mposfine_z_max = find(pos_z == max(pos_z_conn_outer));
 
 % Extract the meshlines in the fine area
 pos_z_fine = pos_z(idx_mposfine_z_min:idx_mposfine_z_max);

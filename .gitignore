@@ -6,3 +6,4 @@ openEMS_aisler_sma_v2/*.png
 openEMS_aisler_sma_v2/*.pdf
 *.bak
 *.FCStd1
+tmp*.s2p
