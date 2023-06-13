@@ -1,0 +1,240 @@
+# -*- coding: utf-8 -*-
+
+# Macro Begin
+
+import FreeCAD
+import Mesh
+import MeshPart
+import Spreadsheet
+import math
+
+def exportSTLbyLabel(label,  meshLinearDeflection, meshAngularDeflection):
+
+	shape =  Part.getShape(App.ActiveDocument.getObjectsByLabel(label)[0])
+	mesh=MeshPart.meshFromShape(Shape=shape, LinearDeflection=meshLinearDeflection, AngularDeflection=meshAngularDeflection, Relative=True)
+	mesh.removeDuplicatedPoints()
+	mesh.write("./" + label + ".stl")
+
+
+meshLinearDeflection = 0.1
+meshAngularDeflection =20*math.pi/180  # 20°
+
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Export Parameter Spreadsheet
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+sheet =  App.ActiveDocument.getObjectsByLabel("p")[0]
+sheet.exportFile('param.txt')
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Stackup Metal Layer
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+### Stackup - L01
+label = "l01_rf_trace"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+Mesh.export(body, "./" + label + ".stl")
+
+label = "l01_gnd"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel("l01_gnd_north")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("l01_gnd_south_mirror")[0])
+Mesh.export(body, "./" + label + ".stl")
+
+label = "l01_port_gnd"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel("l01_port_gnd")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("l01_port_gnd_mirror")[0])
+Mesh.export(body, "./" + label + ".stl")
+
+### Stackup - L02
+label = "l02_gnd"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel("l02_gnd_north")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("l02_gnd_south_mirror")[0])
+Mesh.export(body, "./" + label + ".stl")
+
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel("l02_neg")[0])
+Mesh.export(body, "./l02_neg.stl")
+
+label = "l02_port_gnd"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel("l02_port_gnd")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("l02_port_gnd_mirror")[0])
+Mesh.export(body, "./" + label + ".stl")
+
+### Stackup - L03
+label = "l03_gnd"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+Mesh.export(body, "./" + label + ".stl")
+
+label = "l03_neg"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+Mesh.export(body, "./" + label + ".stl")
+
+label = "l03_port_gnd"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+Mesh.export(body, "./" + label + ".stl")
+
+### Stackup - L04
+label = "l04_gnd"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+Mesh.export(body, "./" + label + ".stl")
+
+#label = "l04_neg"
+#body=[]
+#body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+#Mesh.export(body, "./" + label + ".stl")
+
+label = "l04_port_gnd"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+Mesh.export(body, "./" + label + ".stl")
+
+### Stackup - L05
+label = "l05_gnd"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+Mesh.export(body, "./" + label + ".stl")
+
+#label = "l05_neg"
+#body=[]
+#body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+#Mesh.export(body, "./" + label + ".stl")
+
+label = "l05_port_gnd"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+Mesh.export(body, "./" + label + ".stl")
+
+### Stackup - L06
+label = "l06_gnd"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+Mesh.export(body, "./" + label + ".stl")
+
+label = "l06_port_gnd"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+Mesh.export(body, "./" + label + ".stl")
+
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Stackup Substrate
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+label = "sub01_prepreg"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+Mesh.export(body, "./" + label + ".stl")
+
+label = "sub02_core"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+Mesh.export(body, "./" + label + ".stl")
+
+label = "sub03_prepreg"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+Mesh.export(body, "./" + label + ".stl")
+
+label = "sub04_core"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+Mesh.export(body, "./" + label + ".stl")
+
+label = "sub05_prepreg"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+Mesh.export(body, "./" + label + ".stl")
+
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Edge Plating
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+label = "edge_plating"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+body.append(App.ActiveDocument.getObjectsByLabel("edge_plating_mirror")[0])
+Mesh.export(body, "./" + label + ".stl")
+
+
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Via Transition Region
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+label = "via_trans"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel("via0_1")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via0_2")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via0_3")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via0_4")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via0_5")[0])
+
+body.append(App.ActiveDocument.getObjectsByLabel("via1_1")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via1_2")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via1_3")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via1_4")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via1_5")[0])
+
+body.append(App.ActiveDocument.getObjectsByLabel("via0_1_mirror")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via0_2_mirror")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via0_3_mirror")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via0_4_mirror")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via0_5_mirror")[0])
+
+body.append(App.ActiveDocument.getObjectsByLabel("via1_1_mirror")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via1_2_mirror")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via1_3_mirror")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via1_4_mirror")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via1_5_mirror")[0])
+
+Mesh.export(body, "./" + label + ".stl")
+
+
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Via Fence
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+label = "via_fence"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel("via2_1")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via2_2")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via2_3")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via2_4")[0])
+
+body.append(App.ActiveDocument.getObjectsByLabel("via2_1_mirror")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via2_2_mirror")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via2_3_mirror")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("via2_4_mirror")[0])
+
+Mesh.export(body, "./" + label + ".stl")
+
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Solder
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+label = "solder_top_pin"
+body=[]
+#body.append(App.ActiveDocument.getObjectsByLabel("solder_top")[0])
+#body.append(App.ActiveDocument.getObjectsByLabel("solder_top_mirror")[0])
+body.append(App.ActiveDocument.getObjectsByLabel("solder_top_pin")[0])
+Mesh.export(body, "./" + label + ".stl")
+
+label = "solder_bot"
+body=[]
+body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
+Mesh.export(body, "./" + label + ".stl")
+
+
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Connector
+# -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+exportSTLbyLabel("conn_outer_body",  meshLinearDeflection, meshAngularDeflection)
+exportSTLbyLabel("conn_inner_cond",  meshLinearDeflection, meshAngularDeflection)
+exportSTLbyLabel("conn_sub",  meshLinearDeflection, meshAngularDeflection)
