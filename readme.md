@@ -2,9 +2,9 @@
 
 Recently I came across [openEMS](https://www.openems.de/), a free and open electromagnetic field solver using the FDTD method.
 
-The project has been around a few years and it is quite impressive how far it has developed (05/2023). I was wondering if it is possible to solve a complex RF simulation task using open source software only.
+The project has been around a few years, and it is quite impressive how far it has developed (05/2023). I was wondering if it is possible to solve a complex RF simulation task using open source software only.
 
-A license of a typical commercial RF simulation environment (CST, ADS, AWR...) can cost 1000$/month easily. This price is out of range for hobbyists and small companies that do not use these software products on a daily base.
+A license of a typical commercial RF simulation environment (CST, ADS, AWR...) can cost $1000/month easily. This price is out of range for hobbyists and small companies that do not use these software products on a daily basis.
 
 I chose the task below as a representative test case:
 > "Design a high performance SMA (SubMiniature version A) low cost Coaxial to Microstrip transition up to 20GHz on a FR4 multilayer stackup fabricated by an affordable PCB prototyping service."
@@ -35,14 +35,14 @@ A list of open source software used in this project:
 
 
 ## 2. Rosenberger 32K242-40ML5 SMA Connector
-I have chosen a typical right angle jack SMA connector. This connector type requires a cutout in the PCB edge which is an additional design and manufacturing effort.
+I have chosen a typical right angle jack SMA connector. This connector type requires a cutout in the PCB edge, which is an additional design and manufacturing effort.
 
 <p align = "center"><img src="./figures/edge_mount_connector.jpg" alt="fig_conn_wuerth" width="500"></p>
 <p align = "center">Figure 1: A typical edge mount SMA connector to be mounted in a cutout</p>
 
 However, I like these connectors because the solder mount is very strong due to the large mounting area which results in very good mechanical durability. The parasitic inductance in the return current is also low because the solder joint is right at the circular edge of the coaxial outer conductor.
 
- Connectors of this kind are available from multiple manufacturers (Molex, Würth, Rosenberger...). I chose the one which was cheapest for me to source which was the one manufactured by Rosenberger. Therefore the 32K242-40ML5 made the run, purchased for about 6€ at rs-online.com. Figure 1 shows an exemplary CAD model of the Würth 60312202114307 (Rosenberger does not provide CAD a model for their part).
+ Connectors of this kind are available from multiple manufacturers (Molex, Würth, Rosenberger...). I went with the Rosenberger one due to its availability where I live. Specifically, the 32K242-40ML5 made the run. It was about 6€ at rs-online.com. Figure 1 shows an exemplary CAD model of the Würth 60312202114307 (Rosenberger does not provide CAD a model for their part).
 
 ## 3. The Connector Model
 Typically the first step in designing a coaxial to microstrip transition is to request a simulation or mechanical model from the connector vendor. 
@@ -136,7 +136,7 @@ Above the right end of the inner conductor there is some small radiation visible
 
 At the edge where the connector and the PCB meet the internal copper layers of the PCB and the connector outer body form a parasitic parallel plate waveguide along the z dimension. It is important to avoid the excitation of this waveguide to prevent excessive leakage at higher frequencies. The field results clearly show that there is no radiation at the connector to pcb interface.
 
-Finally let´s examine the Scattering Parameters of the simulation. Figure 11 shows the simulation results calculated by openEMS. The reference plane for all S-Paramteter results is located at the right edge of the capacitive compensation structure as shown in Figure 8. The exact location can be verified in the KiCAD PCB file. This edge is the transition where the connector footprint ends and the 50Ohm microstrip line starts. 
+Finally let's examine the Scattering Parameters of the simulation. Figure 11 shows the simulation results calculated by openEMS. The reference plane for all S-Paramteter results is located at the right edge of the capacitive compensation structure as shown in Figure 8. The exact location can be verified in the KiCAD PCB file. This edge is the transition where the connector footprint ends and the 50Ohm microstrip line starts. 
 
 Port 1 is the coaxial one, Port 2 the microstrip port. A return loss greater than 23dB was achieved from DC to 20GHz.
 
@@ -159,9 +159,9 @@ The fabricated test board from Figure 8 with two connectors back to back was mea
 
 Let´s take a closer look at this plot. The S21 curve is almost perfect. It is flat with no dips. However, one will notice that the magnitude return loss curves are not identical. So, the structure is not entirely symmetrical. This is due to manufacturing tolerances. Keep in mind that we are talking about a low cost connector and PCB. The connectors are hand soldered, so some small displacements are to expected.
 
-In order to relate this result of Figure 13 to the simulated one in Figure 11 some some approximate observations can be done. Approximately, we can think about the measured structure as two identical imperfectly matched two ports (the connector) with low insertion loss and an ideal transmission line in between. Because the insertion loss of the two ports is low every miss match on either side will propagate directly through to the other side. The transmission line will further rotate the phase of the reflection coefficients with frequency. The 28.9mm transmission line is multiple wavelengths long at the highest frequency of interest (20GHz). So it is save to assume that the all possible phase angles between the two imperfectly matched connectors will occur over frequency.
+In order to relate this result of Figure 13 to the simulated one in Figure 11 some some approximate observations can be done. Approximately, we can think about the measured structure as two identical imperfectly matched two ports (the connector) with low insertion loss and an ideal transmission line in between. Because the insertion loss of the two ports is low, every miss match on either side will propagate directly through to the other side. The transmission line will further rotate the phase of the reflection coefficients with frequency. The 28.9mm transmission line is multiple wavelengths long at the highest frequency of interest (20GHz). So it is save to assume that the all possible phase angles between the two imperfectly matched connectors will occur over frequency.
 
-This phase related worst case impedance miss match $\Gamma_{max}$ that may occur when two imperfectly matched ports with $|\Gamma_a|$ and $|\Gamma_b|$ are connected can be estimated from the following equation. It can be easily derived from the definition if the reflection coefficient:
+This phase related worst case impedance miss match $\Gamma_{max}$ may occur when two imperfectly matched ports with $|\Gamma_a|$ and $|\Gamma_b|$ are connected can be estimated from the following equation. It can be easily derived from the definition if the reflection coefficient:
 
 $$
     |\Gamma_{max}| = \frac{|\Gamma_a| + |\Gamma_b|}{|\Gamma_a \Gamma_b| + 1}
@@ -183,7 +183,7 @@ To properly compare the simulation with the measurement results some advanced ma
 Method 1. has the benefit of being easy to generate using any standard S-Parameter simulator such as Qucs. The downside of this method is that the characteristics a the single connector (left or right ) are not extracted. However, the single connector characteristics are the one of interest when using the connector in an actual circuit. 
 
 The approach in Method 2 extracts these single connector characteristics. This data can be compared directly to the simulation result which is desireable. However, the output data of this method is more difficult to generate.
-The IEEE P370 Standard [(Electrical Characterization of Printed Circuit Board and Related Interconnects at Frequencies up to 50 GHz) ](https://ieeexplore.ieee.org/document/8078138)comes with an open source mathematical algorithm to achieve this goal. The source code can be found on the [IEEE gitlab](https://opensource.ieee.org/elec-char/ieee-370). Internally it uses a time domain transformation approach.
+The IEEE P370 Standard [(Electrical Characterization of Printed Circuit Board and Related Interconnects at Frequencies up to 50 GHz) ](https://ieeexplore.ieee.org/document/8078138) comes with an open source mathematical algorithm to achieve this goal. The source code can be found on the [IEEE gitlab](https://opensource.ieee.org/elec-char/ieee-370). Internally, it uses a time domain transformation approach.
 
 Finally Figure 14 shows the prost processed measurement results from Figure 13 by applying Method 2 on the measured data.
 
