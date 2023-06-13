@@ -42,7 +42,7 @@ I have chosen a typical right angle jack SMA connector. This connector type requ
 
 However, I like these connectors because the solder mount is very strong due to the large mounting area which results in very good mechanical durability. The parasitic inductance in the return current is also low because the solder joint is right at the circular edge of the coaxial outer conductor.
 
- Connectors of this kind are available from multiple manufacturers (Molex, Würth, Rosenberger...). I chose the one which was cheapest for me to source which was the one manufactured by Rosenberger. Therefore the 32K242-40ML5 made the run, purchased for about 6€ at rs-online.com. Figure 1 shows an exemplary CAD model of the Würth 60312202114307 (Rosenberger does not provide CAD a model for their part).
+ Connectors of this kind are available from multiple manufacturers (Molex, Würth, Rosenberger...). I went with the Rosenberger one due to its availability where I live. Specifically, the 32K242-40ML5 made the run. It was about 6€ at rs-online.com. Figure 1 shows an exemplary CAD model of the Würth 60312202114307 (Rosenberger does not provide CAD a model for their part).
 
 ## 3. The Connector Model
 Typically the first step in designing a coaxial to microstrip transition is to request a simulation or mechanical model from the connector vendor. 
