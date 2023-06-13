@@ -4,7 +4,7 @@ Recently I came across [openEMS](https://www.openems.de/), a free and open elect
 
 The project has been around a few years, and it is quite impressive how far it has developed (05/2023). I was wondering if it is possible to solve a complex RF simulation task using open source software only.
 
-A license of a typical commercial RF simulation environment (CST, ADS, AWR...) can cost 1000$/month easily. This price is out of range for hobbyists and small companies that do not use these software products on a daily base.
+A license of a typical commercial RF simulation environment (CST, ADS, AWR...) can cost $1000/month easily. This price is out of range for hobbyists and small companies that do not use these software products on a daily basis.
 
 I chose the task below as a representative test case:
 > "Design a high performance SMA (SubMiniature version A) low cost Coaxial to Microstrip transition up to 20GHz on a FR4 multilayer stackup fabricated by an affordable PCB prototyping service."
