@@ -183,7 +183,7 @@ To properly compare the simulation with the measurement results some advanced ma
 Method 1. has the benefit of being easy to generate using any standard S-Parameter simulator such as Qucs. The downside of this method is that the characteristics a the single connector (left or right ) are not extracted. However, the single connector characteristics are the one of interest when using the connector in an actual circuit. 
 
 The approach in Method 2 extracts these single connector characteristics. This data can be compared directly to the simulation result which is desireable. However, the output data of this method is more difficult to generate.
-The IEEE P370 Standard [(Electrical Characterization of Printed Circuit Board and Related Interconnects at Frequencies up to 50 GHz) ](https://ieeexplore.ieee.org/document/8078138)comes with an open source mathematical algorithm to achieve this goal. The source code can be found on the [IEEE gitlab](https://opensource.ieee.org/elec-char/ieee-370). Internally it uses a time domain transformation approach.
+The IEEE P370 Standard [(Electrical Characterization of Printed Circuit Board and Related Interconnects at Frequencies up to 50 GHz) ](https://ieeexplore.ieee.org/document/8078138) comes with an open source mathematical algorithm to achieve this goal. The source code can be found on the [IEEE gitlab](https://opensource.ieee.org/elec-char/ieee-370). Internally, it uses a time domain transformation approach.
 
 Finally Figure 14 shows the prost processed measurement results from Figure 13 by applying Method 2 on the measured data.
 
