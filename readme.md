@@ -2,7 +2,7 @@
 
 Recently I came across [openEMS](https://www.openems.de/), a free and open electromagnetic field solver using the FDTD method.
 
-The project has been around a few years and it is quite impressive how far it has developed (05/2023). I was wondering if it is possible to solve a complex RF simulation task using open source software only.
+The project has been around a few years, and it is quite impressive how far it has developed (05/2023). I was wondering if it is possible to solve a complex RF simulation task using open source software only.
 
 A license of a typical commercial RF simulation environment (CST, ADS, AWR...) can cost 1000$/month easily. This price is out of range for hobbyists and small companies that do not use these software products on a daily base.
 
