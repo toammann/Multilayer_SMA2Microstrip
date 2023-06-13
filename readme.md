@@ -161,7 +161,7 @@ Let´s take a closer look at this plot. The S21 curve is almost perfect. It is f
 
 In order to relate this result of Figure 13 to the simulated one in Figure 11 some some approximate observations can be done. Approximately, we can think about the measured structure as two identical imperfectly matched two ports (the connector) with low insertion loss and an ideal transmission line in between. Because the insertion loss of the two ports is low, every miss match on either side will propagate directly through to the other side. The transmission line will further rotate the phase of the reflection coefficients with frequency. The 28.9mm transmission line is multiple wavelengths long at the highest frequency of interest (20GHz). So it is save to assume that the all possible phase angles between the two imperfectly matched connectors will occur over frequency.
 
-This phase related worst case impedance miss match $\Gamma_{max}$ that may occur when two imperfectly matched ports with $|\Gamma_a|$ and $|\Gamma_b|$ are connected can be estimated from the following equation. It can be easily derived from the definition if the reflection coefficient:
+This phase related worst case impedance miss match $\Gamma_{max}$ may occur when two imperfectly matched ports with $|\Gamma_a|$ and $|\Gamma_b|$ are connected can be estimated from the following equation. It can be easily derived from the definition if the reflection coefficient:
 
 $$
     |\Gamma_{max}| = \frac{|\Gamma_a| + |\Gamma_b|}{|\Gamma_a \Gamma_b| + 1}
