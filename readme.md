@@ -136,7 +136,7 @@ Above the right end of the inner conductor there is some small radiation visible
 
 At the edge where the connector and the PCB meet the internal copper layers of the PCB and the connector outer body form a parasitic parallel plate waveguide along the z dimension. It is important to avoid the excitation of this waveguide to prevent excessive leakage at higher frequencies. The field results clearly show that there is no radiation at the connector to pcb interface.
 
-Finally let´s examine the Scattering Parameters of the simulation. Figure 11 shows the simulation results calculated by openEMS. The reference plane for all S-Paramteter results is located at the right edge of the capacitive compensation structure as shown in Figure 8. The exact location can be verified in the KiCAD PCB file. This edge is the transition where the connector footprint ends and the 50Ohm microstrip line starts. 
+Finally let's examine the Scattering Parameters of the simulation. Figure 11 shows the simulation results calculated by openEMS. The reference plane for all S-Paramteter results is located at the right edge of the capacitive compensation structure as shown in Figure 8. The exact location can be verified in the KiCAD PCB file. This edge is the transition where the connector footprint ends and the 50Ohm microstrip line starts. 
 
 Port 1 is the coaxial one, Port 2 the microstrip port. A return loss greater than 23dB was achieved from DC to 20GHz.
 
