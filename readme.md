@@ -35,7 +35,7 @@ A list of open source software used in this project:
 
 
 ## 2. Rosenberger 32K242-40ML5 SMA Connector
-I have chosen a typical right angle jack SMA connector. This connector type requires a cutout in the PCB edge which is an additional design and manufacturing effort.
+I have chosen a typical right angle jack SMA connector. This connector type requires a cutout in the PCB edge, which is an additional design and manufacturing effort.
 
 <p align = "center"><img src="./figures/edge_mount_connector.jpg" alt="fig_conn_wuerth" width="500"></p>
 <p align = "center">Figure 1: A typical edge mount SMA connector to be mounted in a cutout</p>
