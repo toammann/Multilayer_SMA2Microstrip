@@ -107,6 +107,11 @@ filesep_dbl = '\\';
 % - 
 % ------------------------------------------------------------------------------
 
+% Pysical constants
+c0 = 299792458; % m/s
+MUE0 = 4e-7*pi; % N/A^2
+EPS0 = 1/(MUE0*c0^2); % F/m
+
 % Undersize the z-coordiante of the metal layers as suggested by Thorsten Liebing
 % To compensate for floating point issues in  the stl import
 % https://github.com/thliebig/openEMS-Project/discussions/43
@@ -117,7 +122,7 @@ float_tol = 100e-9; % units [mm]
 unit = 1e-3; % all units in [mm]
 
 Er_lambda = 1;
-c0 = 299792458; % m/s
+
 lambda = c0/(f_stop*sqrt(Er_lambda));
 mesh_res = lambda/unit/mes_res_lambda_div;
 
