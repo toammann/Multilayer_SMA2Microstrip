@@ -47,7 +47,7 @@ confirm_recursive_rmdir(0);
 result_filename = 'tmp';
 
 % Excitation
-run_sim = true;
+run_sim = false;
 smooth_mesh = true;
 deemb_p2 = true;
 
@@ -114,10 +114,10 @@ float_tol = 100e-9; % units [mm]
 %float_tol = 0.005; % units [mm]
 #float_tol = 0;
 
-physical_constants;
 unit = 1e-3; % all units in [mm]
 
 Er_lambda = 1;
+c0 = 299792458; % m/s
 lambda = c0/(f_stop*sqrt(Er_lambda));
 mesh_res = lambda/unit/mes_res_lambda_div;
 
