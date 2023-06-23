@@ -95,8 +95,8 @@ idcs   = strfind(mydir, filesep);
 parentDir = mydir(1:idcs(end)-1);
 
 model_dir = [parentDir, filesep, 'FreeCAD_Aisler6LayerHD_SMA_v2'];
-model_dir = strrep(model_dir, '\', '\\');
-filesep_dbl = '\\';
+model_dir = strrep(model_dir, filesep, [filesep, filesep]);
+filesep_dbl = [filesep, filesep];
 
 % Load parameters from FreeCAD spreadsheet
 [p, p_desc] = parse_freecad_spr_param([model_dir, filesep, 'param.txt'],  '\t');
