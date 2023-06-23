@@ -47,7 +47,7 @@ confirm_recursive_rmdir(0);
 result_filename = 'tmp';
 
 % Excitation
-run_sim = false;
+run_sim = true;
 smooth_mesh = true;
 deemb_p2 = true;
 
