@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "RF_Connectors")(type "KiCad")(uri "/home/oberstet/scm/oberstet/Multilayer_SMA2Microstrip/KiCAD_Rosenberger_32K242-40ML5_Footprint/RF_Connectors.pretty")(options "")(descr ""))
+)

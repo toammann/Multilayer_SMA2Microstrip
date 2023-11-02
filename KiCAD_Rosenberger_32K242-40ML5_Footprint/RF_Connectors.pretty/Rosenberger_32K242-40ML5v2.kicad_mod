@@ -546,7 +546,6 @@
         (width 0) (fill yes))
     ) (tstamp b9d2f636-68e9-4b0b-8368-949a8aef0dab))
   (pad "2" smd custom (at 6.65 0) (size 0.5 0.5) (layers "In3.Cu" "In4.Cu")
-    (thermal_bridge_angle 45)
     (options (clearance outline) (anchor circle))
     (primitives
       (gr_rect (start -0.65 -1.45) (end 1.5 1.45) (width 0) (fill yes))
@@ -746,9 +745,9 @@
       f9f6b09b-f4d9-4638-bbe2-de1b7db1fe61
     )
   )
-  (model "./STP_60312202114307.stp"
-    (offset (xyz 7 0 0.47))
+  (model "/home/oberstet/scm/oberstet/Multilayer_SMA2Microstrip/KiCAD_Rosenberger_32K242-40ML5_Footprint/RF_Connectors.pretty/32k242-40mxx_shrink.stp"
+    (offset (xyz 6.85 0 0.44))
     (scale (xyz 1 1 1))
-    (rotate (xyz -90 0 90))
+    (rotate (xyz 90 90 90))
   )
 )

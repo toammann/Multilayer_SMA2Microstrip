@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "AMMANN_RF_Connectors")(type "KiCad")(uri "/home/oberstet/scm/oberstet/Multilayer_SMA2Microstrip/AMMANN_RF_Connectors.kicad_sym")(options "")(descr ""))
+)
