@@ -41,12 +41,6 @@ body.append(App.ActiveDocument.getObjectsByLabel("l01_gnd_north")[0])
 body.append(App.ActiveDocument.getObjectsByLabel("l01_gnd_south_mirror")[0])
 Mesh.export(body, "./" + label + ".stl")
 
-label = "l01_port_gnd"
-body=[]
-body.append(App.ActiveDocument.getObjectsByLabel("l01_port_gnd")[0])
-body.append(App.ActiveDocument.getObjectsByLabel("l01_port_gnd_mirror")[0])
-Mesh.export(body, "./" + label + ".stl")
-
 ### Stackup - L02
 label = "l02_gnd"
 body=[]
@@ -57,12 +51,6 @@ Mesh.export(body, "./" + label + ".stl")
 body=[]
 body.append(App.ActiveDocument.getObjectsByLabel("l02_neg")[0])
 Mesh.export(body, "./l02_neg.stl")
-
-label = "l02_port_gnd"
-body=[]
-body.append(App.ActiveDocument.getObjectsByLabel("l02_port_gnd")[0])
-body.append(App.ActiveDocument.getObjectsByLabel("l02_port_gnd_mirror")[0])
-Mesh.export(body, "./" + label + ".stl")
 
 ### Stackup - L03
 label = "l03_gnd"
@@ -75,10 +63,6 @@ body=[]
 body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
 Mesh.export(body, "./" + label + ".stl")
 
-label = "l03_port_gnd"
-body=[]
-body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
-Mesh.export(body, "./" + label + ".stl")
 
 ### Stackup - L04
 label = "l04_gnd"
@@ -91,11 +75,6 @@ Mesh.export(body, "./" + label + ".stl")
 #body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
 #Mesh.export(body, "./" + label + ".stl")
 
-label = "l04_port_gnd"
-body=[]
-body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
-Mesh.export(body, "./" + label + ".stl")
-
 ### Stackup - L05
 label = "l05_gnd"
 body=[]
@@ -107,18 +86,9 @@ Mesh.export(body, "./" + label + ".stl")
 #body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
 #Mesh.export(body, "./" + label + ".stl")
 
-label = "l05_port_gnd"
-body=[]
-body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
-Mesh.export(body, "./" + label + ".stl")
 
 ### Stackup - L06
 label = "l06_gnd"
-body=[]
-body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
-Mesh.export(body, "./" + label + ".stl")
-
-label = "l06_port_gnd"
 body=[]
 body.append(App.ActiveDocument.getObjectsByLabel(label)[0])
 Mesh.export(body, "./" + label + ".stl")

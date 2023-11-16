@@ -5,9 +5,9 @@ pcb_th	1.4035	Total thickness of the pcb
 port_length_x	6.5	Reserved length on the substrate for the openEMS port =B1 - (B7 + B12 + B61 + B64 + B66) - 5
 
 slot_x	7	Length of the slot for the connector  in the x-dimension
-slot_y	7.2	Length of the slot for the connector  in the y-dimension
+slot_y	7.1	Length of the slot for the connector  in the y-dimension
 
-edge_milling_tool_diam	1.6	Dimameter of the milling tool
+edge_milling_tool_diam	1.8	Dimameter of the milling tool
 edge_drill_diam	0.9	Diameter of the edge drill (tooling diamater)
 edge_spacing_copper_x	0.2	Coppler clearance measured from the pcb edge in x-dimension
 edge_spacing_via_x	0.3	Distance bewteen the board edge and a via coverpad

@@ -32,6 +32,7 @@ A list of open-source software used in this project:
 - [6. Simulation Results](#6-simulation-results)
 - [7. Measurement Results](#7-measurement-results)
 - [8. Conclusion](#8-conclusion)
+- [9. KiCAD Howto](#9-kicad-howto)
 
 
 ## 2. Rosenberger 32K242-40ML5 SMA Connector
@@ -222,6 +223,11 @@ The agreement between simulated and measured results is very good especially con
 Unfortunately, openEMS lacks detailed training materials what makes the software hard to use for a beginner. This case study demonstrates how powerful this free software actually is. Hopefully, it will encourage other people to publish simulated and measured results. This will greatly improve the confidence in the simulator and hopefully attract more users. 
 
 The more users the more information is available in the form of tutorials or forum discussions.
+
+
+## 9. KiCAD Howto
+Please find instructons how to use the KiCAD footprint [here](./KiCAD_Rosenberger_32K242-40ML5_Footprint/Rosenberger_32K242-40ML5_Footprint_HowTo.md).
+
 
  ### License Information
 

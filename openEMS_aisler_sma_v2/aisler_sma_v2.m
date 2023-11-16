@@ -1,20 +1,22 @@
 % AISLER_SMA_V2 OpenEMS sim. script: SMA Coaxial to Microstrip on Aisler 6Layer
 %
-%   Simulates a Rosenberger 32K242-40ML5 SMA Connector on an AISLER 6Layer HD 
+%   Simulates a Rosenberger 32K242-40ML5 SMA Connector on an AISLER 6Layer HD
 %   Stackup
 %
 %   Simulation time: approx. 20min (depending on the mesh settings)
 %
+%  Requirements:
+%   - openEMS v0.0.36 (Support of non-PEC material (copper) in PML termination)
 %
 % BSD 2-Clause License
 % Copyright (c) 2023, Tobias Ammann
-% 
+%
 % Redistribution and use in source and binary forms, with or without
 % modification, are permitted provided that the following conditions are met:
-% 
+%
 % 1. Redistributions of source code must retain the above copyright notice, this
 %    list of conditions and the following disclaimer.
-% 
+%
 % 2. Redistributions in binary form must reproduce the above copyright notice,
 %    this list of conditions and the following disclaimer in the documentation
 %    and/or other materials provided with the distribution.
@@ -33,52 +35,51 @@
 close all
 clear
 clc
-addpath('../CTB');
+addpath('../CTB/');
+addpath('../../../permitttivity_model');
 
 confirm_recursive_rmdir(0);
 
 % ------------------------------------------------------------------------------
-% - 
-% - Simulation Control 
-% - 
+% -
+% - Simulation Control
+% -
 % ------------------------------------------------------------------------------
 % Result touchsonte filename
 #result_filename = 'rosenberger_32K242-40ML5_on_aisler_6layer_v2_final';
-result_filename = 'tmp';
+result_filename = 'rosenberger_32K242-40ML5_matType_normal';
 
 % Excitation
 run_sim = true;
 smooth_mesh = true;
 deemb_p2 = true;
+useDispersionModel = false; % Lorentz Materials are used, this will increase the
+                            % simulation time significantly
 
 excite_p1 = true;
 excite_p2 = true;
 
 % Model view
-show_structure_p1 = true;
-show_structure_p2 = false;
+show_structure_p1 = false;
+show_structure_p2 = true;
 
 % Output and Debug
 write_field_dumps = true;
 
 f_start = 0e9;
 f_stop  = 30e9;
-end_criteria_energy = -33; %dB
+end_criteria_energy = -40; %dB
 
 mesh_res_edge = 0.02;
 minFixedMeshDist = mesh_res_edge;
 mes_res_lambda_div = 20*3;
 
-##mesh_res_edge = 0;
-##minFixedMeshDist = 0.02;
-%mes_res_lambda_div = 40;
-
 BC = {'PML_8' 'PML_8' 'MUR' 'MUR' 'PML_8' 'PML_8'};
 
 % ------------------------------------------------------------------------------
-% - 
+% -
 % - Simulation Path and import
-% - 
+% -
 % ------------------------------------------------------------------------------
 
 sim_p1_path = 'sim_res_p1';
@@ -102,9 +103,9 @@ filesep_dbl = [filesep, filesep];
 [p, p_desc] = parse_freecad_spr_param([model_dir, filesep, 'param.txt'],  '\t');
 
 % ------------------------------------------------------------------------------
-% - 
-% - Simulation Model Parameters 
-% - 
+% -
+% - Simulation Model Parameters
+% -
 % ------------------------------------------------------------------------------
 
 % Pysical constants, alternatetively you may use physical_constants provided by openEMS
@@ -116,8 +117,6 @@ EPS0 = 1/(MUE0*c0^2); % F/m
 % To compensate for floating point issues in  the stl import
 % https://github.com/thliebig/openEMS-Project/discussions/43
 float_tol = 100e-9; % units [mm]
-%float_tol = 0.005; % units [mm]
-#float_tol = 0;
 
 unit = 1e-3; % all units in [mm]
 
@@ -136,7 +135,7 @@ CSX = InitCSX();
 deemb_length_x = 5;
 p_msl.length = p.port_length_x;
 p_msl.w = p.l01_wg_trace_w;
-% At the end of l01_compC_x, shifted by the analytical deembedding 
+% At the end of l01_compC_x, shifted by the analytical deembedding
 p_msl.meas_shift = p.pcb_x - (p.slot_x + p.edge_spacing_copper_x + p.l01_pad_x + p.l01_compL_x + p.l01_compC_x) - deemb_length_x;
 p_msl.feed_shift = 10*mesh_res;
 
@@ -149,11 +148,11 @@ p_coax.meas_shift = p_coax.length - 0.1;
 p_coax.feed_shift = 10*mesh_res;;
 
 % ------------------------------------------------------------------------------
-% - 
+% -
 % - Mesh in X-Dimension
-% - 
+% -
 % ------------------------------------------------------------------------------
-% PCB 
+% PCB
 pos_x_pcb(1) = 0;
 pos_x_pcb(2) = p.slot_x - p.edge_plating_th;
 pos_x_pcb(3) = p.slot_x;
@@ -163,8 +162,8 @@ pos_x_pcb(4) = p.pcb_x;
 pos_x_pad_and_match(1) = p.slot_x                   + p.edge_spacing_copper_x - 2/3*mesh_res_edge;
 pos_x_pad_and_match(2) = pos_x_pad_and_match(end)   + mesh_res_edge;
 
-pos_x_pad_and_match(3) = pos_x_pad_and_match(end-1) + 2/3*mesh_res_edge + p.l01_pad_x - 1/3*mesh_res_edge;   
-pos_x_pad_and_match(4) = pos_x_pad_and_match(end)   + mesh_res_edge; 
+pos_x_pad_and_match(3) = pos_x_pad_and_match(end-1) + 2/3*mesh_res_edge + p.l01_pad_x - 1/3*mesh_res_edge;
+pos_x_pad_and_match(4) = pos_x_pad_and_match(end)   + mesh_res_edge;
 
 pos_x_pad_and_match(5) = pos_x_pad_and_match(end-1) + 1/3*mesh_res_edge + p.l01_compL_x - 2/3*mesh_res_edge;
 pos_x_pad_and_match(6) = pos_x_pad_and_match(end)   + mesh_res_edge;
@@ -262,7 +261,6 @@ pos_x_fine = pos_x(idx_mposfine_x_min:idx_mposfine_x_max);
 pos_x_coarse = pos_x;
 pos_x_coarse(idx_mposfine_x_min:idx_mposfine_x_max) = [];
 
-
 # Smooth the fine and coarse mesh
 if smooth_mesh
   mesh_x_fine = SmoothMeshLines(pos_x_fine, mesh_res/4);
@@ -273,12 +271,12 @@ else
 end
 
 % ------------------------------------------------------------------------------
-% - 
+% -
 % Mesh in Y-Dimension
-% - 
+% -
 % ------------------------------------------------------------------------------
 
-% PCB 
+% PCB
 pos_y_pcb(1) = p.pcb_y/2;
 
 % Pad, matching structure and GND plane; apply "Thirds Rule"
@@ -286,7 +284,7 @@ pos_y_pad_and_match(1) = 0;
 pos_y_pad_and_match(2) = p.l01_compL_y/2 - 1/3*mesh_res_edge;
 pos_y_pad_and_match(3) = pos_y_pad_and_match(end) + mesh_res_edge;
 
-pos_y_pad_and_match(4) = p.l01_wg_trace_w/2 - 1/3*mesh_res_edge;   
+pos_y_pad_and_match(4) = p.l01_wg_trace_w/2 - 1/3*mesh_res_edge;
 pos_y_pad_and_match(5) = pos_y_pad_and_match(end) + mesh_res_edge;
 
 pos_y_pad_and_match(6) = p.l01_pad_y/2 - 1/3*mesh_res_edge;
@@ -316,7 +314,7 @@ pos_y_conn_outer(3) = p.conn_outer_sec3_y;
 pos_y_conn_outer(4) = p.conn_outer_sec2_y;
 pos_y_conn_outer(5) = p.conn_outer_sec1_y;
 
-% Vias in transition region 
+% Vias in transition region
 pos_y_vias_trans(1) = p.l01_pad_y/2 + p.l01_pad2gnd_spacing_y + (p.via_cp_d - p.via_d)/2;
 pos_y_vias_trans(2) = pos_y_vias_trans(end) + p.via_d;
 pos_y_vias_trans(3) = pos_y_vias_trans(end) + sqrt(3/4)*p.via_pitch;
@@ -370,9 +368,9 @@ end
 mesh.y = [-flip(mesh.y(2:end)), mesh.y]; %The structure is symmetrical at the xz plane
 
 % ------------------------------------------------------------------------------
-% - 
+% -
 % Mesh in Z-Dimension
-% - 
+% -
 % ------------------------------------------------------------------------------
 % Undersize the z-coordiante of the metal layers as suggested by Thorsten Liebing
 % To compensate for floating point issues in  the stl import
@@ -384,7 +382,7 @@ mesh.y = [-flip(mesh.y(2:end)), mesh.y]; %The structure is symmetrical at the xz
 % Positions Referenced to top (most negatvie z value of the shape)
 pos_z_stackup(1)  = 0               - float_tol;    % Top surface
 pos_z_stackup(2)  = p.l01_pos       + float_tol;    % L01 Copper z_min
-pos_z_stackup(3)  = p.sub01_pos     - float_tol;    % Prepreg 1080 
+pos_z_stackup(3)  = p.sub01_pos     - float_tol;    % Prepreg 1080
 pos_z_stackup(4)  = p.l02_pos       + float_tol;    % L02 Copper z_min
 pos_z_stackup(5)  = p.sub02_pos     - float_tol;    % Core
 pos_z_stackup(6)  = p.l03_pos       + float_tol;    % L03 Copper z_min
@@ -397,7 +395,7 @@ pos_z_stackup(12) = p.l06_pos       + float_tol;    % L06 Copper z_min, bottom l
 
 % Solder arount the inner connector pin
 pos_z_solder_pin =  p.conn_inner_cond_pos_z - float_tol;  % move inwards to ensure at least
-                                                          % one mesh line in on the surface 
+                                                          % one mesh line in on the surface
                                                           %of solder_pin structure
 
                                                           % Connector inner conductor and solder mesh
@@ -450,9 +448,9 @@ end
 CSX = DefineRectGrid( CSX, unit, mesh);
 
 % ------------------------------------------------------------------------------
-% - 
+% -
 % - Material Definition
-% - 
+% -
 % ------------------------------------------------------------------------------
 
 mat_copper.name = 'Copper';
@@ -460,17 +458,17 @@ mat_copper.kappa = 56e6;
 
 mat_prepreg1080.name = 'Prepreg_1080_Panasonic-R-1551-W';
 mat_prepreg1080.er = 4.3;
-mat_prepreg1080.tand = 0.015;
+mat_prepreg1080.tand = 0.013;
 mat_prepreg1080.kappa = mat_prepreg1080.tand*mat_prepreg1080.er*EPS0*2*pi*(f_stop-f_start)/2;
 
 mat_prepreg7628.name = 'Prepreg_7628_Panasonic-R-1551-W';
 mat_prepreg7628.er = 4.6;
-mat_prepreg7628.tand = 0.015;
+mat_prepreg7628.tand = 0.012;
 mat_prepreg7628.kappa = mat_prepreg7628.tand*mat_prepreg7628.er*EPS0*2*pi*(f_stop-f_start)/2;
 
 mat_core.name = 'Core_7628_Panasonic-R-1566-W';
 mat_core.er = 4.6;
-mat_core.tand = 0.015;
+mat_core.tand = 0.012;
 mat_core.kappa = mat_core.tand*mat_core.er*EPS0*2*pi*(f_stop-f_start)/2;
 
 mat_teflon.name = 'Teflon';
@@ -479,45 +477,35 @@ mat_teflon.tand = 0.002;
 mat_teflon.kappa = mat_teflon.tand*mat_teflon.er*EPS0*2*pi*(f_stop-f_start)/2;
 
 %Substrate Materials
-CSX = AddMaterial(CSX, mat_teflon.name); % connector substrate
-CSX = SetMaterialProperty( CSX, mat_teflon.name, 'Epsilon', mat_teflon.er, 'Kappa', mat_teflon.kappa);
+if useDispersionModel
 
-CSX = AddMaterial(CSX, mat_prepreg7628.name);
-CSX = SetMaterialProperty( CSX, mat_prepreg7628.name, 'Epsilon', mat_prepreg7628.er, 'Kappa', mat_prepreg7628.kappa);
+  mMin = 4;
+  CSX = AddDjordjevicSarkarMaterial(CSX, mat_prepreg1080.name, mat_prepreg1080.er, mat_prepreg1080.tand, 6e9, 200e9, 'f1', 10^mMin/(2*pi));
+  CSX = AddDjordjevicSarkarMaterial(CSX, mat_prepreg7628.name, mat_prepreg7628.er, mat_prepreg7628.tand, 6e9, 200e9, 'f1', 10^mMin/(2*pi));
+  CSX = AddDjordjevicSarkarMaterial(CSX, mat_core.name, mat_core.er, mat_core.tand,                      6e9, 200e9, 'f1', 10^mMin/(2*pi));
+  CSX = AddDjordjevicSarkarMaterial(CSX, mat_teflon.name, mat_teflon.er, mat_teflon.tand,                6e9, 200e9, 'f1', 10^mMin/(2*pi));
 
-CSX = AddMaterial(CSX, mat_prepreg1080.name);
-CSX = SetMaterialProperty( CSX, mat_prepreg1080.name, 'Epsilon', mat_prepreg1080.er, 'Kappa', mat_prepreg1080.kappa);
+else
+  CSX = AddMaterial(CSX, mat_teflon.name); % connector substrate
+  CSX = SetMaterialProperty( CSX, mat_teflon.name, 'Epsilon', mat_teflon.er, 'Kappa', mat_teflon.kappa);
 
-CSX = AddMaterial(CSX, mat_core.name);
-CSX = SetMaterialProperty( CSX, mat_core.name, 'Epsilon', mat_core.er, 'Kappa', mat_core.kappa);
+  CSX = AddMaterial(CSX, mat_prepreg7628.name);
+  CSX = SetMaterialProperty( CSX, mat_prepreg7628.name, 'Epsilon', mat_prepreg7628.er, 'Kappa', mat_prepreg7628.kappa);
+
+  CSX = AddMaterial(CSX, mat_prepreg1080.name);
+  CSX = SetMaterialProperty( CSX, mat_prepreg1080.name, 'Epsilon', mat_prepreg1080.er, 'Kappa', mat_prepreg1080.kappa);
+
+  CSX = AddMaterial(CSX, mat_core.name);
+  CSX = SetMaterialProperty( CSX, mat_core.name, 'Epsilon', mat_core.er, 'Kappa', mat_core.kappa);
+end
 
 %Metallic Materials
 CSX = AddMetal(CSX, 'PEC');
-CSX = AddMetal(CSX, 'PEC_Port'); 
-%CSX = AddMetal(CSX, 'conn_inner_cond'); 
-%CSX = AddMetal(CSX, 'conn_outer_cond'); 
-CSX = AddMetal(CSX, 'Solder_Top_Pin'); 
+CSX = AddMetal(CSX, 'PEC_Port');
+CSX = AddMetal(CSX, 'Solder_Top_Pin');
 
 CSX = AddMaterial(CSX, mat_copper.name);
 CSX = SetMaterialProperty( CSX, mat_copper.name, 'Kappa', mat_copper.kappa);
-
-CSX = AddMaterial(CSX, 'Copper_L01');
-CSX = SetMaterialProperty( CSX, 'Copper_L01', 'Kappa', mat_copper.kappa);
-
-CSX = AddMaterial(CSX, 'Copper_L02');
-CSX = SetMaterialProperty( CSX, 'Copper_L02', 'Kappa', mat_copper.kappa);
-
-CSX = AddMaterial(CSX, 'Copper_L03');
-CSX = SetMaterialProperty( CSX, 'Copper_L03', 'Kappa', mat_copper.kappa);
-
-CSX = AddMaterial(CSX, 'Copper_L04');
-CSX = SetMaterialProperty( CSX, 'Copper_L04', 'Kappa', mat_copper.kappa);
-
-CSX = AddMaterial(CSX, 'Copper_L05');
-CSX = SetMaterialProperty( CSX, 'Copper_L05', 'Kappa', mat_copper.kappa);
-
-CSX = AddMaterial(CSX, 'Copper_L06');
-CSX = SetMaterialProperty( CSX, 'Copper_L06', 'Kappa', mat_copper.kappa);
 
 CSX = AddMaterial(CSX, 'Conn_Inner');
 CSX = SetMaterialProperty( CSX, 'Conn_Inner', 'Kappa', mat_copper.kappa);
@@ -525,83 +513,99 @@ CSX = SetMaterialProperty( CSX, 'Conn_Inner', 'Kappa', mat_copper.kappa);
 CSX = AddMaterial(CSX, 'Conn_Outer');
 CSX = SetMaterialProperty( CSX, 'Conn_Outer', 'Kappa', mat_copper.kappa);
 
+##CSX = AddMaterial(CSX, 'L01');
+##CSX = SetMaterialProperty( CSX, 'L01', 'Kappa', mat_copper.kappa);
+##
+##CSX = AddMaterial(CSX, 'L02');
+##CSX = SetMaterialProperty( CSX, 'L02', 'Kappa', mat_copper.kappa);
+##
+##CSX = AddMaterial(CSX, 'L03');
+##CSX = SetMaterialProperty( CSX, 'L03', 'Kappa', mat_copper.kappa);
+##
+##CSX = AddMaterial(CSX, 'L04');
+##CSX = SetMaterialProperty( CSX, 'L04', 'Kappa', mat_copper.kappa);
+##
+##CSX = AddMaterial(CSX, 'L05');
+##CSX = SetMaterialProperty( CSX, 'L05', 'Kappa', mat_copper.kappa);
+##
+##CSX = AddMaterial(CSX, 'L06');
+##CSX = SetMaterialProperty( CSX, 'L06', 'Kappa', mat_copper.kappa);
+
+CSX = AddMetal(CSX, 'L01');
+CSX = AddMetal(CSX, 'L02');
+CSX = AddMetal(CSX, 'L03');
+CSX = AddMetal(CSX, 'L04');
+CSX = AddMetal(CSX, 'L05');
+CSX = AddMetal(CSX, 'L06');
 
 % ------------------------------------------------------------------------------
-% - 
+% -
 % - Import 3D Model
-% - 
+% -
 % ------------------------------------------------------------------------------
 
 % Stackup - L01
-CSX = ImportSTL(CSX, 'Copper_L01',         10, [model_dir, filesep_dbl, 'l01_rf_trace.stl']);
-CSX = ImportSTL(CSX, 'Copper_L01',         10, [model_dir, filesep_dbl, 'l01_gnd.stl']);
-CSX = ImportSTL(CSX, 'PEC',                20, [model_dir, filesep_dbl, 'l01_port_gnd.stl']);
+CSX = ImportSTL(CSX, 'L01', 10, [model_dir, filesep_dbl, 'l01_rf_trace.stl']);
+CSX = ImportSTL(CSX, 'L01', 10, [model_dir, filesep_dbl, 'l01_gnd.stl']); %PEC
 
 % Stackup - Substrate 01, Prepreg
-CSX = ImportSTL(CSX, mat_prepreg1080.name,  1, [model_dir, filesep_dbl, 'sub01_prepreg.stl']);
+CSX = ImportSTL(CSX, mat_prepreg1080.name, 1, [model_dir, filesep_dbl, 'sub01_prepreg.stl']);
 
 % Stackup - L02
-CSX = ImportSTL(CSX, 'Copper_L02',         10, [model_dir, filesep_dbl, 'l02_gnd.stl']);
-CSX = ImportSTL(CSX, 'PEC',                20, [model_dir, filesep_dbl, 'l02_port_gnd.stl']);
+CSX = ImportSTL(CSX, 'L02', 10, [model_dir, filesep_dbl, 'l02_gnd.stl']);
 CSX = ImportSTL(CSX, mat_prepreg1080.name,  1, [model_dir, filesep_dbl, 'l02_neg.stl']);
 
 % Stackup - Substrate 02, Core
-CSX = ImportSTL(CSX, mat_core.name,         2, [model_dir, filesep_dbl, 'sub02_core.stl']);
+CSX = ImportSTL(CSX, mat_core.name, 2, [model_dir, filesep_dbl, 'sub02_core.stl']);
 
 % Stackup - L03
-CSX = ImportSTL(CSX, 'Copper_L03',         10, [model_dir, filesep_dbl, 'l03_gnd.stl']);
-CSX = ImportSTL(CSX, mat_prepreg7628.name,  1, [model_dir, filesep_dbl, 'l03_neg.stl']);
-CSX = ImportSTL(CSX, 'PEC',                20, [model_dir, filesep_dbl, 'l03_port_gnd.stl']);
+CSX = ImportSTL(CSX, 'L03',10, [model_dir, filesep_dbl, 'l03_gnd.stl']);
+CSX = ImportSTL(CSX, mat_prepreg7628.name, 1, [model_dir, filesep_dbl, 'l03_neg.stl']);
 
 % Stackup - Substrate 03, Prepreg
-CSX = ImportSTL(CSX, mat_prepreg7628.name,  1, [model_dir, filesep_dbl, 'sub03_prepreg.stl']);
+CSX = ImportSTL(CSX, mat_prepreg7628.name, 1, [model_dir, filesep_dbl, 'sub03_prepreg.stl']);
 
 % Stackup - L04
-CSX = ImportSTL(CSX, 'Copper_L04',         10, [model_dir, filesep_dbl, 'l04_gnd.stl']);
-CSX = ImportSTL(CSX, 'PEC',                20, [model_dir, filesep_dbl, 'l04_port_gnd.stl']);
-#CSX = ImportSTL(CSX, mat_prepreg7628.name,  1, [model_dir, filesep_dbl, 'l04_neg.stl']);
+CSX = ImportSTL(CSX, 'L04', 10, [model_dir, filesep_dbl, 'l04_gnd.stl']);
 
 % Stackup - Substrate 04, Core
-CSX = ImportSTL(CSX, mat_core.name,        2, [model_dir, filesep_dbl, 'sub04_core.stl']);
+CSX = ImportSTL(CSX, mat_core.name, 2, [model_dir, filesep_dbl, 'sub04_core.stl']);
 
 % Stackup - L05
-CSX = ImportSTL(CSX, 'Copper_L05',         10, [model_dir, filesep_dbl, 'l05_gnd.stl']);
-CSX = ImportSTL(CSX, 'PEC',                20, [model_dir, filesep_dbl, 'l05_port_gnd.stl']);
-#CSX = ImportSTL(CSX, mat_prepreg1080.name,  1, [model_dir, filesep_dbl, 'l05_neg.stl']);
+CSX = ImportSTL(CSX, 'L05', 10, [model_dir, filesep_dbl, 'l05_gnd.stl']);
 
 % Stackup - Substrate 05, Core
-CSX = ImportSTL(CSX, mat_prepreg1080.name,  1, [model_dir, filesep_dbl, 'sub05_prepreg.stl']);
+CSX = ImportSTL(CSX, mat_prepreg1080.name, 1, [model_dir, filesep_dbl, 'sub05_prepreg.stl']);
 
 % Stackup - L06
-CSX = ImportSTL(CSX, 'Copper_L06',         10, [model_dir, filesep_dbl, 'l06_gnd.stl']);
-CSX = ImportSTL(CSX, 'PEC',                20, [model_dir, filesep_dbl, 'l06_port_gnd.stl']);
+CSX = ImportSTL(CSX, 'L06', 10, [model_dir, filesep_dbl, 'l06_gnd.stl']);
 
 % Edge Plating
-CSX = ImportSTL(CSX, 'Copper',             11, [model_dir, filesep_dbl, 'edge_plating.stl']);
+CSX = ImportSTL(CSX, 'Copper', 11, [model_dir, filesep_dbl, 'edge_plating.stl']);
 
 % Via - Transition Region
-CSX = ImportSTL(CSX, 'Copper',             20, [model_dir, filesep_dbl, 'via_trans.stl']);
+CSX = ImportSTL(CSX, 'Copper', 20, [model_dir, filesep_dbl, 'via_trans.stl']);
 
 % Via - Fence
-CSX = ImportSTL(CSX, 'Copper',             20, [model_dir, filesep_dbl, 'via_fence.stl']);
+CSX = ImportSTL(CSX, 'Copper', 20, [model_dir, filesep_dbl, 'via_fence.stl']);
 
 % Connector
 
-CSX = ImportSTL(CSX, 'Conn_Outer',        10, [model_dir, filesep_dbl, 'conn_outer_body.stl']);
-CSX = ImportSTL(CSX, 'Conn_Inner',        20, [model_dir, filesep_dbl, 'conn_inner_cond.stl']);
-CSX = ImportSTL(CSX, 'Teflon',             1, [model_dir, filesep_dbl, 'conn_sub.stl']);
+CSX = ImportSTL(CSX, 'Conn_Outer', 10, [model_dir, filesep_dbl, 'conn_outer_body.stl']);
+CSX = ImportSTL(CSX, 'Conn_Inner', 20, [model_dir, filesep_dbl, 'conn_inner_cond.stl']);
+CSX = ImportSTL(CSX, 'Teflon',      1, [model_dir, filesep_dbl, 'conn_sub.stl']);
 
 ##% Solder
 
-CSX = ImportSTL(CSX, 'Solder_Top_Pin',    10,  [model_dir, filesep_dbl, 'solder_top_pin.stl']);
-CSX = ImportSTL(CSX, 'PEC',               30,  [model_dir, filesep_dbl, 'solder_bot.stl']);
+CSX = ImportSTL(CSX, 'Solder_Top_Pin', 10, [model_dir, filesep_dbl, 'solder_top_pin.stl']);
+CSX = ImportSTL(CSX, 'PEC',            30, [model_dir, filesep_dbl, 'solder_bot.stl']);
 
 % ------------------------------------------------------------------------------
-% - 
+% -
 % - View Geometry
 % - Only for disabled mesh smoothing, the script will stop here
 % - (useful for checking the mesh)
-% - 
+% -
 % ------------------------------------------------------------------------------
 
 if ~smooth_mesh
@@ -623,9 +627,9 @@ if ~smooth_mesh
 end
 
 % ------------------------------------------------------------------------------
-% - 
+% -
 % - Port Definition
-% - 
+% -
 % ------------------------------------------------------------------------------
 
 % Port 1 - Coaxial
@@ -638,23 +642,38 @@ stop  = [p1_pos,                 0,  p.conn_inner_cond_pos_z];
                                  'ExciteAmp', 1,...
                                  'FeedShift', p_coax.feed_shift,...
                                  'MeasPlaneShift', p_coax.meas_shift);
-                                
 
+# Something is strange with the exciation of port 2
+# The energy propagates first in the z-direcetion istead of xand is reflected at
+# the metal. The reflection then travels through the structure. However, some
+# static charge remains wich does not decay over time...
+# Having a homogenious substrate material solves the problem. Not sure why....
 
-# Port 2 - Microstrip
-start = [ p.pcb_x,               -p_msl.w/2, pos_z_stackup(2)]; % L01 Copper z_min
-stop  = [ p.pcb_x - p_msl.length, p_msl.w/2, pos_z_stackup(5)]; %z_max of L03 copper or z_min of sub2
+start = [ p.pcb_x - p_msl.feed_shift - mesh_res/2, -p_msl.w/2, pos_z_stackup(2)];
+stop  = [ p.pcb_x - p_msl.feed_shift + mesh_res/2,  p_msl.w/2, pos_z_stackup(5)];
+CSX = AddBox(CSX, mat_core.name, 3, start, stop);
+
+# Change width of the Stripline to match 50R without the GND planes on the
+# right and left. In this way the MSL port can operate corretly
+p_msl.w = 0.7;
+
+##start = [ p.pcb_x,               -p_msl.w/2, pos_z_stackup(1)];
+##stop  = [ p.pcb_x - p_msl.length, p_msl.w/2, pos_z_stackup(2)];
+##CSX = AddBox(CSX, 'PEC_Port', 30, start, stop);
+
+start = [ p.pcb_x,               -p_msl.w/2, pos_z_stackup(2)];
+stop  = [ p.pcb_x - p_msl.length, p_msl.w/2, pos_z_stackup(5)];
 
 [CSX, port{2}] = AddMSLPort( CSX, 999, 2, 'PEC_Port', start, stop, 'x', [0 0 -1],...
                             'ExcitePort', true,...
                             'FeedShift', p_msl.feed_shift,...
-                            'MeasPlaneShift', p_msl.meas_shift,...
-                            'Feed_R', 1e6);
+                            'MeasPlaneShift', p_msl.meas_shift);
+                            ##'Feed_R', 1e6);
 
 % ------------------------------------------------------------------------------
-% - 
+% -
 % - Dump Boxes (Field Monitors)
-% - 
+% -
 % ------------------------------------------------------------------------------
 if write_field_dumps
   CSX = AddDump(CSX,'Et_xz','DumpMode', 10, 'Frequency',[20e9]);        %  10 for E-field frequency-domain dump
@@ -680,9 +699,9 @@ end
 
 
 % ------------------------------------------------------------------------------
-% - 
+% -
 % - Write OpenEMS xml file
-% - 
+% -
 % ------------------------------------------------------------------------------
 
 if run_sim && excite_p1
@@ -699,17 +718,17 @@ end
 excitations = CSX.Properties.Excitation;
 
 %Set CSX to excite only exciation 1
-CSX.Properties.Excitation =excitations(1);
+CSX.Properties.Excitation = excitations(1);
 WriteOpenEMS( [sim_p1_path '/' sim_p1_CSX], FDTD, CSX );
 
 %Set CSX to excite only exciation 2
-CSX.Properties.Excitation =excitations(2);
+CSX.Properties.Excitation = excitations(2);
 WriteOpenEMS( [sim_p2_path '/' sim_p2_CSX], FDTD, CSX );
 
 % ------------------------------------------------------------------------------
-% - 
+% -
 % - View Geometry
-% - 
+% -
 % ------------------------------------------------------------------------------
 
 if show_structure_p1
@@ -723,9 +742,9 @@ if show_structure_p2
 end
 
 % ------------------------------------------------------------------------------
-% - 
+% -
 % - Run Simulation
-% - 
+% -
 % ------------------------------------------------------------------------------
 
 if run_sim && excite_p1
@@ -734,7 +753,7 @@ if run_sim && excite_p1
   fprintf('Starting exciation of Port 1...\n');
   fprintf('---------------------------------------------------------------------\n');
   fprintf('\n');
-  RunOpenEMS( sim_p1_path, sim_p1_CSX ,'--debug-PEC');  
+  RunOpenEMS( sim_p1_path, sim_p1_CSX ,'--debug-PEC');
   %RunOpenEMS( sim_p1_path, sim_p1_CSX ,'--debug-material --debug-PEC --debug-operator');
 end
 
@@ -744,14 +763,14 @@ if run_sim && excite_p2
   fprintf('Starting exciation of Port 2...\n\n');
   fprintf('---------------------------------------------------------------------\n');
   fprintf('\n');
-  RunOpenEMS( sim_p2_path, sim_p2_CSX ,'--debug-PEC');  
+  RunOpenEMS( sim_p2_path, sim_p2_CSX ,'--debug-PEC');
   %RunOpenEMS( sim_p2_path, sim_p2_CSX ,'--debug-material --debug-PEC --debug-operator');
 end
 
 % ------------------------------------------------------------------------------
-% - 
+% -
 % - Post Processing
-% - 
+% -
 % ------------------------------------------------------------------------------
 
 %% post-processing
@@ -766,43 +785,36 @@ s22 = zeros(1,length(freq));
 legend_str = {};
 
 if excite_p1
-  
+
   port_excite_p1 = calcPort( port, sim_p1_path, freq, 'RefImpedance', 50);
-  
+
   s11 = port_excite_p1{1}.uf.ref./ port_excite_p1{1}.uf.inc;
   s21 = port_excite_p1{2}.uf.ref./ port_excite_p1{1}.uf.inc;
-  
+
   hold on;
   plot(freq/1e9,20*log10(abs(s21)),'LineWidth',2);
   plot(freq/1e9,20*log10(abs(s11)),'LineWidth',2);
   hold off;
-  
+
   legend_str = {'S_{21}', 'S_{11}'};
 end
-  
 
 if excite_p2
-  
+
   port_excite_p2 = calcPort( port, sim_p2_path, freq, 'RefImpedance', 50);
+  %port_excite_p2 = calcPort( port, sim_p2_path, freq);
 
   s12 = port_excite_p2{1}.uf.ref./ port_excite_p2{2}.uf.inc;
   s22 = port_excite_p2{2}.uf.ref./ port_excite_p2{2}.uf.inc;
-  
+
+  #s22 = squeeze(s_renorm(reshape(s22, 1,1, length(s22)), 55, 50))
+
   hold on;
   plot(freq/1e9,20*log10(abs(s12)),'LineWidth',2);
   plot(freq/1e9,20*log10(abs(s22)),'LineWidth',2);
   hold off;
 
   legend_str = [legend_str, {'S_{12}', 'S_{22}'}];
-end
-
-
-S = reshape([s11 ; s21 ; s12 ; s22], 2, 2, length(freq));
-
-% Deembedd port 2 if requested 
-if deemb_p2
-  [~,~,Sfix,~,~] = read_touchstone('p2_gcwg.s2p');
-  S = deembRight(S, Sfix, 50);
 end
 
 grid on;
@@ -816,13 +828,22 @@ xlabel('frequency (GHz) \rightarrow','FontSize',12);
 ##plotSmith(s22, 'S22', freq, [])
 ##legend('S11', 'S22');
 
-if run_sim 
+S = reshape([s11 ; s21 ; s12 ; s22], 2, 2, length(freq));
+
+% Deembedd port 2 if requested
+if deemb_p2
+  [~,~,Sfix,~,~] = read_touchstone('p2_gcwg.s2p');
+  S = deembRight(S, Sfix, 50);
+end
+
+
+if run_sim
   fname = [result_filename, '_',  datestr(now,'yyyy-mm-dd_HHMMSS'), '.s2p'];
   fprintf('\n');
   fprintf('---------------------------------------------------------------------\n\n');
   fprintf('Write touchstone result fiele: %s\n\n', fname);
   fprintf('---------------------------------------------------------------------\n');
   fprintf('\n');
-    
+
   write_touchstone( 's', freq, S, fname, 50, 'comment_to_be_done');
 end

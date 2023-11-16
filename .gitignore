@@ -4,6 +4,10 @@ openEMS_aisler_sma_v2/sim_res_p1/
 openEMS_aisler_sma_v2/sim_res_p2/
 openEMS_aisler_sma_v2/*.png
 openEMS_aisler_sma_v2/*.pdf
+KiCAD_Rosenberger_32K242-40ML5_testboard_v2/rosenberger_32K242-40ML5_testboard_v2-backups/
 *.bak
 *.FCStd1
 tmp*.s2p
+*.kicad_dru
+*.kicad_prl
+fp-info-cache
